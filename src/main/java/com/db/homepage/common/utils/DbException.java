@@ -1,6 +1,7 @@
 package com.db.homepage.common.utils;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 自定义一异常
@@ -8,6 +9,7 @@ import lombok.Data;
  * @author 大兵
  * @date 2018-10-04 22:19
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DbException extends RuntimeException {
     private String msg;

@@ -124,7 +124,7 @@
      */
     function setMenu(id, name) {
         // alert(id + name);
-        var menuId = ${menu.menuId!}+"";
+        var menuId = ${menu.menuId!"-1"};
         if (menuId == id) {
             layer.alert("不能选择自己")
         } else {

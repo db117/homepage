@@ -47,8 +47,7 @@
     <#--</ul>-->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:void(0);" class="layTabPlus"
-                   tab_url="${request.contextPath}/sys/user/info.html?userId=${sysUser.userId}"
+                <a href="${request.contextPath}/sys/user/info.html?userId=${sysUser.userId}" target="main"
                    style="font-size: large">${sysUser.username}</a>
             <#--<dl class="layui-nav-child">-->
             <#--<dd><a href="">基本资料</a></dd>-->
@@ -85,7 +84,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © layui.com - 底部固定区域
+        © 首页管理
     </div>
 </div>
 <script src="${request.contextPath}/static/plugin/layui/layui.js"></script>
