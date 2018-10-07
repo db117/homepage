@@ -3,10 +3,10 @@ package com.db.homepage.module.sys.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.db.homepage.common.annotation.SysLog;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Constant;
 import com.db.homepage.common.utils.DbException;
 import com.db.homepage.common.utils.Result;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.entity.SysMenuEntity;
 import com.db.homepage.module.sys.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class SysMenuController extends AbstractController {
     @Autowired
     private SysMenuService sysMenuService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     @GetMapping(value = "list.html")
     public String list1() {
@@ -49,13 +49,13 @@ public class SysMenuController extends AbstractController {
     @ResponseBody
     public Result listData() {
 
-        return Result.getPageRes((long) cacheManager.getAllMenu().size(), cacheManager.getAllMenu());
+        return Result.getPageRes((long) sysCache.getAllMenu().size(), sysCache.getAllMenu());
     }
 
     @RequestMapping(value = "treeData")
     @ResponseBody
     public List<SysMenuEntity> treeData() {
-        List<SysMenuEntity> list = CollUtil.newArrayList(cacheManager.getMenuNotButten());
+        List<SysMenuEntity> list = CollUtil.newArrayList(sysCache.getMenuNotButten());
 
         list.forEach(m -> {
             m.setOpen(true);
@@ -77,7 +77,7 @@ public class SysMenuController extends AbstractController {
      */
     @GetMapping(value = "form.html")
     public String form(Long menuId, Model model) {
-        model.addAttribute("menu", cacheManager.getMenuById(menuId));
+        model.addAttribute("menu", sysCache.getMenuById(menuId));
         return "module/sys/menu/menuform";
     }
 
@@ -112,7 +112,7 @@ public class SysMenuController extends AbstractController {
 
         sysMenuService.save(menu);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -127,7 +127,7 @@ public class SysMenuController extends AbstractController {
         verifyForm(menu);
 
         sysMenuService.updateById(menu);
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -149,7 +149,7 @@ public class SysMenuController extends AbstractController {
         }
 
         sysMenuService.delete(menuId);
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 

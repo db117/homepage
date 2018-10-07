@@ -12,21 +12,8 @@
     <meta name="format-detection" content="telephone=no">
 
     <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/index.css" media="all">
 </head>
-<style>
-    #iframe {
-        box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, .2), inset 0 2px 0 hsla(0, 0%, 100%, .1), inset 0 1.2em 0 hsla(0, 0%, 100%, 0.1), inset 0 -0.2em 0 hsla(0, 0%, 100%, .1), inset 0 -0.25em 0 hsla(0, 0%, 0%, .25), 0 0.25em 0.25em hsla(0, 0%, 0%, .05) !important;
-        /* background: -webkit-gradient(linear, left top, left bottom, from(#5575bd), to(#0a1b4c) ); */
-        background-image: -webkit-linear-gradient(hsla(0, 0%, 100%, 0.12), hsla(0, 0%, 100%, 0.08)) !important;
-        background-image: -moz-linear-gradient(hsla(0, 0%, 100%, 0.12), hsla(0, 0%, 100%, 0.08)) !important;
-        background-image: -ms-linear-gradient(hsla(0, 0%, 100%, 0.12), hsla(0, 0%, 100%, 0.08)) !important;
-        background-image: -o-linear-gradient(hsla(0, 0%, 100%, 0.12), hsla(0, 0%, 100%, 0.08)) !important;
-        background-image: linear-gradient(hsla(0, 0%, 100%, 0.12), hsla(0, 0%, 100%, 0.08)) !important;
-        background: rgba(255, 255, 255, 0.2) !important;
-        border: none !important;
-        overflow-y: scroll !important;
-    }
-</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
@@ -88,11 +75,16 @@
     </div>
 </div>
 <script src="${request.contextPath}/static/plugin/layui/layui.js"></script>
+<script src="${request.contextPath}/static/lib/jquery.min.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use('element', function () {
+    layui.use(['element', 'jquery'], function () {
         var element = layui.element;
+        var $ = layui.jquery;
 
+        $(".layui-logo").click(function () {
+            location.href = '/';
+        })
     });
 </script>
 </body>

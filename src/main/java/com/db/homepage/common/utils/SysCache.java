@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
  * @author 大兵
  * @date 2018-07-17 16:07
  **/
-@Component("cacheManager")
+@Component
 @SuppressWarnings("unchecked")
-public class CacheManager {
+public class SysCache {
     /**
      * 字典缓存key
      */

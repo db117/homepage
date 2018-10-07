@@ -54,6 +54,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/login.html");
+        shiroFilter.setSuccessUrl("/adminIndex.html");
         shiroFilter.setUnauthorizedUrl("/");
 
         Map<String, String> filterMap = new LinkedHashMap<>();
@@ -63,7 +64,8 @@ public class ShiroConfig {
         filterMap.put("/sys/login", "anon");
         filterMap.put("/captcha.jpg", "anon");
 //        filterMap.put("/**", "authc");
-        filterMap.put("/front/**", "anon");
+        filterMap.put("/index.html", "anon");
+        filterMap.put("/", "anon");
         filterMap.put("/**", "user");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 

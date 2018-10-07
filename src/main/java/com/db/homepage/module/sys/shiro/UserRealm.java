@@ -2,8 +2,8 @@ package com.db.homepage.module.sys.shiro;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Constant;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.dao.SysMenuDao;
 import com.db.homepage.module.sys.dao.SysUserDao;
 import com.db.homepage.module.sys.entity.SysMenuEntity;
@@ -33,7 +33,7 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysMenuDao sysMenuDao;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     /**
      * 授权(验证权限时调用)
@@ -48,14 +48,14 @@ public class UserRealm extends AuthorizingRealm {
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
 //            List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
-            List<SysMenuEntity> menuList = cacheManager.getAllMenu();
+            List<SysMenuEntity> menuList = sysCache.getAllMenu();
             permsList = new ArrayList<>(menuList.size());
             for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
 //            permsList = sysUserDao.queryAllPerms(userId);
-            permsList = cacheManager.getPermsByUserId(userId);
+            permsList = sysCache.getPermsByUserId(userId);
         }
 
         //用户权限列表
@@ -84,7 +84,7 @@ public class UserRealm extends AuthorizingRealm {
         SysUserEntity user = new SysUserEntity();
 //        user.setUsername(token.getUsername());
 //        user = sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", user.getUsername()));
-        user = cacheManager.getUserByUsername(token.getUsername());
+        user = sysCache.getUserByUsername(token.getUsername());
         //账号不存在
         if (user == null) {
             throw new UnknownAccountException("账号或密码不正确");

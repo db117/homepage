@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.db.homepage.common.utils.CacheManager;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.dao.SysUserDao;
 import com.db.homepage.module.sys.entity.SysUserEntity;
 import com.db.homepage.module.sys.service.SysDeptService;
@@ -34,7 +34,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     @Override
     public List<Long> queryAllMenuId(Long userId) {
@@ -64,7 +64,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
             user.setPassword(null);
         } else {
 
-            user.setPassword(ShiroUtils.sha256(user.getPassword(), cacheManager.getUserById(user.getUserId()).getSalt()));
+            user.setPassword(ShiroUtils.sha256(user.getPassword(), sysCache.getUserById(user.getUserId()).getSalt()));
         }
         this.updateById(user);
 

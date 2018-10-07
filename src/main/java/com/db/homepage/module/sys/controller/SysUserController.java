@@ -4,8 +4,8 @@ package com.db.homepage.module.sys.controller;
 import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.homepage.common.annotation.SysLog;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Result;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.entity.SysUserEntity;
 import com.db.homepage.module.sys.service.SysDeptService;
 import com.db.homepage.module.sys.service.SysUserRoleService;
@@ -33,7 +33,7 @@ public class SysUserController extends AbstractController {
     @Autowired
     private SysUserRoleService sysUserRoleService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
     @Autowired
     private SysDeptService sysDeptService;
 
@@ -67,13 +67,13 @@ public class SysUserController extends AbstractController {
     public String form(SysUserEntity sysUserEntity, Model model) {
         SysUserEntity sysUser = sysUserService.getById(sysUserEntity.getUserId());
         if (Objects.nonNull(sysUser)) {
-            sysUser.setDeptName(cacheManager.getDeptById(sysUser.getDeptId()).getName());
-            sysUser.setRoleIdList(cacheManager.getRoleIdByUserId(sysUser.getUserId()));
+            sysUser.setDeptName(sysCache.getDeptById(sysUser.getDeptId()).getName());
+            sysUser.setRoleIdList(sysCache.getRoleIdByUserId(sysUser.getUserId()));
             model.addAttribute("sysUser", sysUser);
         } else {
             model.addAttribute("sysUser", new SysUserEntity());
         }
-        model.addAttribute("roleList", cacheManager.getAllRole());
+        model.addAttribute("roleList", sysCache.getAllRole());
 
         return "module/sys/user/userform";
     }
@@ -113,7 +113,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.save1(user);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -127,7 +127,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.update(user);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -148,7 +148,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.removeByIds(Arrays.asList(userIds));
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -160,11 +160,11 @@ public class SysUserController extends AbstractController {
     @RequestMapping(value = "info.html")
     public String userInfo(String userId, Model model) {
         SysUserEntity sysUser = sysUserService.getById(userId);
-        sysUser.setDeptName(cacheManager.getDeptById(sysUser.getDeptId()).getName());
-        sysUser.setRoleIdList(cacheManager.getRoleIdByUserId(sysUser.getUserId()));
+        sysUser.setDeptName(sysCache.getDeptById(sysUser.getDeptId()).getName());
+        sysUser.setRoleIdList(sysCache.getRoleIdByUserId(sysUser.getUserId()));
         model.addAttribute("sysUser", sysUser);
 
-        model.addAttribute("roleList", cacheManager.getAllRole());
+        model.addAttribute("roleList", sysCache.getAllRole());
         return "module/sys/user/userinfo";
     }
 }

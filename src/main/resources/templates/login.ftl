@@ -77,7 +77,7 @@
                     processData: false,
                     success: function (data) {
                         if (data.code === 0) {
-                            window.location.href = "${request.contextPath}/index.html"
+                            window.location.href = "${request.contextPath}/adminIndex.html"
                         } else {
                             alert(data.msg)
                         }

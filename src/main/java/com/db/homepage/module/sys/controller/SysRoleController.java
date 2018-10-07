@@ -4,8 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.homepage.common.annotation.SysLog;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Result;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.entity.SysRoleEntity;
 import com.db.homepage.module.sys.service.SysRoleDeptService;
 import com.db.homepage.module.sys.service.SysRoleMenuService;
@@ -33,7 +33,7 @@ public class SysRoleController extends AbstractController {
     @Autowired
     private SysRoleDeptService sysRoleDeptService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     /**
      * 进入列表
@@ -57,7 +57,7 @@ public class SysRoleController extends AbstractController {
 
         //设置其他属性
         page.getRecords().forEach(role -> {
-            SysRoleEntity temp = cacheManager.getRoleById(role.getRoleId());
+            SysRoleEntity temp = sysCache.getRoleById(role.getRoleId());
 
             role.setDeptIdList(temp.getDeptIdList());
             role.setMenuIdList(temp.getMenuIdList());
@@ -68,7 +68,7 @@ public class SysRoleController extends AbstractController {
 
     @GetMapping(value = "form.html")
     public String form(Model model, Long roleId) {
-        model.addAttribute("role", cacheManager.getRoleById(roleId));
+        model.addAttribute("role", sysCache.getRoleById(roleId));
         return "module/sys/role/roleform";
     }
 
@@ -83,7 +83,7 @@ public class SysRoleController extends AbstractController {
 
         sysRoleService.save1(role);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -97,7 +97,7 @@ public class SysRoleController extends AbstractController {
 
         sysRoleService.update(role);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 
@@ -110,7 +110,7 @@ public class SysRoleController extends AbstractController {
     public Result delete(Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 }

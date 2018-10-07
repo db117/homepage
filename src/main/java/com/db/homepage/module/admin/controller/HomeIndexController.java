@@ -7,6 +7,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.db.homepage.common.utils.BizCache;
 import com.db.homepage.common.utils.Result;
 import com.db.homepage.module.admin.entity.HomeIndex;
 import com.db.homepage.module.admin.service.HomeIndexService;
@@ -34,6 +35,8 @@ import java.util.Map;
 public class HomeIndexController {
     @Autowired
     private HomeIndexService indexService;
+    @Autowired
+    private BizCache bizCache;
 
     /**
      * 列表
@@ -86,6 +89,8 @@ public class HomeIndexController {
         if (homeIndex.getId() == null) {
             return Result.getBool(indexService.save(homeIndex));
         }
+
+        bizCache.clear();
         return Result.getBool(indexService.updateById(homeIndex));
     }
 
@@ -112,6 +117,7 @@ public class HomeIndexController {
     @RequestMapping("delete")
     @ResponseBody
     public Result delete(Long id) {
+        bizCache.clear();
         return Result.getBool(indexService.removeById(id));
     }
 }

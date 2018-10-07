@@ -3,8 +3,8 @@ package com.db.homepage.module.sys.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Result;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.entity.SysDictEntity;
 import com.db.homepage.module.sys.service.SysDictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     /**
      * 进入列表页面
@@ -58,7 +58,7 @@ public class SysDictController {
      */
     @GetMapping(value = "form.html")
     public String form(Long id, Model model) {
-        model.addAttribute("dict", cacheManager.getDictById(id));
+        model.addAttribute("dict", sysCache.getDictById(id));
         return "module/sys/dict/dictform";
     }
 
@@ -69,10 +69,10 @@ public class SysDictController {
      */
     @GetMapping(value = "form2.html")
     public String form2(Long id, Model model) {
-        SysDictEntity dict = cacheManager.getDictById(id);
+        SysDictEntity dict = sysCache.getDictById(id);
         SysDictEntity temp = new SysDictEntity();
         temp.setName(dict.getName());
-        temp.setOrderNum(cacheManager.getMaxOrderNum(dict.getType()));
+        temp.setOrderNum(sysCache.getMaxOrderNum(dict.getType()));
         temp.setType(dict.getType());
         temp.setRemark(dict.getRemark());
         temp.setCode(dict.getCode() + "1");
@@ -90,7 +90,7 @@ public class SysDictController {
 
         sysDictService.save(dict);
 
-        cacheManager.clear();
+        sysCache.clear();
 
         return Result.getSuccess();
     }
@@ -104,7 +104,7 @@ public class SysDictController {
 
         sysDictService.updateById(dict);
 
-        cacheManager.clear();
+        sysCache.clear();
 
         return Result.getSuccess();
     }
@@ -117,7 +117,7 @@ public class SysDictController {
     public Result delete(Long[] ids) {
         sysDictService.removeByIds(Arrays.asList(ids));
 
-        cacheManager.clear();
+        sysCache.clear();
         return Result.getSuccess();
     }
 

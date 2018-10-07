@@ -2,6 +2,7 @@ package com.db.homepage.module.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.homepage.module.admin.entity.HomeIndex;
+import com.db.homepage.module.admin.vo.HomeVo;
 
 /**
  * <p>
@@ -13,4 +14,8 @@ import com.db.homepage.module.admin.entity.HomeIndex;
  */
 public interface HomeIndexService extends IService<HomeIndex> {
 
+    /**
+     * 获取首页对象
+     */
+    HomeVo getHomeVo();
 }

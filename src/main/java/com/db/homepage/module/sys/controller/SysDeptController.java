@@ -1,9 +1,9 @@
 package com.db.homepage.module.sys.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import com.db.homepage.common.utils.CacheManager;
 import com.db.homepage.common.utils.Constant;
 import com.db.homepage.common.utils.Result;
+import com.db.homepage.common.utils.SysCache;
 import com.db.homepage.module.sys.entity.SysDeptEntity;
 import com.db.homepage.module.sys.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class SysDeptController extends AbstractController {
     @Autowired
     private SysDeptService sysDeptService;
     @Autowired
-    private CacheManager cacheManager;
+    private SysCache sysCache;
 
     /**
      * 选择页面
@@ -52,7 +52,7 @@ public class SysDeptController extends AbstractController {
      */
     @GetMapping(value = "form.html")
     public String form(SysDeptEntity deptEntity, Model model) {
-        model.addAttribute("dept", cacheManager.getDeptById(deptEntity.getDeptId()));
+        model.addAttribute("dept", sysCache.getDeptById(deptEntity.getDeptId()));
         return "module/sys/dept/deptform";
     }
 
@@ -62,7 +62,7 @@ public class SysDeptController extends AbstractController {
     @RequestMapping("/data")
     @ResponseBody
     public Result data() {
-        return Result.getPageRes((long) cacheManager.getAllDept().size(), cacheManager.getAllDept());
+        return Result.getPageRes((long) sysCache.getAllDept().size(), sysCache.getAllDept());
     }
 
     /**
@@ -71,7 +71,7 @@ public class SysDeptController extends AbstractController {
     @RequestMapping(value = "treeData")
     @ResponseBody
     public List<SysDeptEntity> treeData() {
-        List<SysDeptEntity> deptList = CollUtil.newArrayList(cacheManager.getAllDept());
+        List<SysDeptEntity> deptList = CollUtil.newArrayList(sysCache.getAllDept());
 
         deptList.forEach(d -> {
             d.setOpen(true);
@@ -97,7 +97,7 @@ public class SysDeptController extends AbstractController {
     public Result save(SysDeptEntity dept) {
         sysDeptService.save(dept);
 
-        cacheManager.clear();
+        sysCache.clear();
 
         return Result.getSuccess();
     }
@@ -110,7 +110,7 @@ public class SysDeptController extends AbstractController {
     public Result update(SysDeptEntity dept) {
         sysDeptService.updateById(dept);
 
-        cacheManager.clear();
+        sysCache.clear();
 
         return Result.getSuccess();
     }
@@ -129,7 +129,7 @@ public class SysDeptController extends AbstractController {
 
         sysDeptService.removeById(deptId);
 
-        cacheManager.clear();
+        sysCache.clear();
 
         return Result.getSuccess();
     }

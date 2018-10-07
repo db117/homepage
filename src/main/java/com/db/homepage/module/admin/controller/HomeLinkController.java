@@ -4,6 +4,7 @@ package com.db.homepage.module.admin.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.db.homepage.common.utils.BizCache;
 import com.db.homepage.common.utils.Result;
 import com.db.homepage.module.admin.entity.HomeLink;
 import com.db.homepage.module.admin.service.HomeLinkService;
@@ -29,6 +30,8 @@ public class HomeLinkController {
     private HomeLinkService linkService;
     @Autowired
     private HomeTypeService typeService;
+    @Autowired
+    private BizCache bizCache;
 
     @RequestMapping("list.html")
     public String list(Model model, Long typeId) {
@@ -58,6 +61,7 @@ public class HomeLinkController {
     @RequestMapping("save")
     @ResponseBody
     public Result save(HomeLink homeLink) {
+        bizCache.clear();
         if (homeLink.getId() == null) {
             return Result.getBool(linkService.save(homeLink));
         } else {
@@ -68,6 +72,7 @@ public class HomeLinkController {
     @ResponseBody
     @RequestMapping("delete")
     public Result delete(Long id) {
+        bizCache.clear();
         return Result.getBool(linkService.removeById(id));
     }
 

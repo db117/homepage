@@ -1,7 +1,5 @@
 package com.db.homepage.module.sys.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.db.homepage.module.admin.entity.HomeIndex;
 import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.sys.service.SysMenuService;
 import com.db.homepage.module.sys.shiro.ShiroUtils;
@@ -30,6 +28,12 @@ public class SysPageController {
 
     @RequestMapping(value = {"/", "index.html"})
     public String index(Model model) {
+        model.addAttribute("homeVo", indexService.getHomeVo());
+        return "front";
+    }
+
+    @RequestMapping(value = {"adminIndex.html"})
+    public String adminIndex(Model model) {
         model.addAttribute("sysUser", ShiroUtils.getUserEntity());
         model.addAttribute("menuList", sysMenuService.getUserMenuList(ShiroUtils.getUserId()));
         return "index";
@@ -37,9 +41,7 @@ public class SysPageController {
 
     @RequestMapping("index1.html")
     public String index1(Model model) {
-        QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("sort");
-        model.addAttribute("homeIndex", indexService.list(wrapper));
+        model.addAttribute("homeVo", indexService.getHomeVo());
         return "index1";
     }
 

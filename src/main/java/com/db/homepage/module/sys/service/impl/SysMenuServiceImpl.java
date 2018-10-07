@@ -1,7 +1,6 @@
 package com.db.homepage.module.sys.service.impl;
 
 
-import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.homepage.common.utils.Constant;
 import com.db.homepage.module.sys.dao.SysMenuDao;
@@ -68,8 +67,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
         //删除菜单
         this.removeById(menuId);
         //删除菜单与角色关联
-        Map temp = (HashMap) MapUtil.createMap(HashMap.class).put("menu_id", menuId);
-        sysRoleMenuService.removeByMap(temp);
+        Map map = new HashMap();
+        map.put("menu_id", menuId);
+        sysRoleMenuService.removeByMap(map);
     }
 
     /**
