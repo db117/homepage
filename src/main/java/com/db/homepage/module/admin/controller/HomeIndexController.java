@@ -54,6 +54,7 @@ public class HomeIndexController {
     public Result data(Page<HomeIndex> page, HomeIndex index) {
         QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("sort");
+        wrapper.like(StrUtil.isNotBlank(index.getName()), "name", index.getName());
         return Result.getPage(indexService.page(page, wrapper));
     }
 

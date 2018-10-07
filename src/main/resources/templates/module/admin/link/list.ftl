@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title>列表</title>
+    <title>网址</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -16,7 +16,7 @@
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn layui-btn-normal layui-btn-radius" data-type="addObject">添加链接</button>
+        <button class="layui-btn layui-btn-normal layui-btn-radius" data-type="addObject">添加网址</button>
     </div>
 </fieldset>
 <div class="demoTable layui-form">
@@ -27,6 +27,17 @@
         </div>
     </div>
 
+    <div class="layui-inline">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-inline">
+            <select name="typeId" id="typeId" lay-verify="required" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+                <#list types as type>
+                    <option value="${type.id}" <#if typeId =type.id>selected</#if>>${type.name}</option>
+                </#list>
+            </select>
+        </div>
+    </div>
     <button class="layui-btn" data-type="reload">搜索</button>
 </div>
 
@@ -55,7 +66,9 @@
             }
             , {field: 'tools', fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
         ];
-        tableRender('#LAY_table_object', '${request.contextPath}/admin/homeIndex/data', clos);
+        tableRender('#LAY_table_object', '${request.contextPath}/admin/homeLink/data', clos, {
+            typeId:${typeId}
+        });
 
         //监听工具条
         table.on('tool(task)', function (obj) {    //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
@@ -65,9 +78,9 @@
             var id = data.id;
 
             if (layEvent === 'del') {          //删除
-                dataDel(obj, '${request.contextPath}/admin/homeIndex/delete?id=' + id);
+                dataDel(obj, '${request.contextPath}/admin/homeLink/delete?id=' + id);
             } else if (layEvent === 'edit') {        //编辑
-                openFull('${request.contextPath}/admin/homeIndex/form.html?id=' + id, '编辑');
+                openFull('${request.contextPath}/admin/homeLink/form.html?id=' + id, '编辑');
             }
         });
 
@@ -76,10 +89,11 @@
                 //执行重载
                 tableReload({
                     name: $('#name').val()
+                    , typeId: $('#typeId').val()
                 });
             }
             , addObject: function () {
-                openFull('${request.contextPath}/admin/homeIndex/form.html', '添加用户');
+                openFull('${request.contextPath}/admin/homeLink/form.html', '添加网址');
             }
         };
 

@@ -2,6 +2,7 @@ package com.db.homepage.module.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -73,6 +74,7 @@ public class HomeIndex extends Model<HomeIndex> {
     /**
      * 是否删除
      */
+    @TableLogic
     private Integer delFlag;
 
 

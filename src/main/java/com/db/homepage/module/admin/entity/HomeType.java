@@ -2,7 +2,9 @@ package com.db.homepage.module.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -36,6 +38,7 @@ public class HomeType extends Model<HomeType> {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
     /**
@@ -51,6 +54,7 @@ public class HomeType extends Model<HomeType> {
     /**
      * 是否删除
      */
+    @TableLogic
     private Integer delFlag;
 
     /**
