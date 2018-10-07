@@ -102,4 +102,12 @@ public class Result {
         return new Result(0, null, page.getTotal(), page.getRecords());
     }
 
+    /**
+     * 返回数据
+     *
+     * @param o 数据对象
+     */
+    public static Result getData(Object o) {
+        return new Result(0, null, -1L, o);
+    }
 }

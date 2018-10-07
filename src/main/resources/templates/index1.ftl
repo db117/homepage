@@ -1,125 +1,108 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8"/>
-    <title>个人首页</title>
-    <link rel="stylesheet" type="text/css" href="${request.contextPath}/static/plugin/layui/css/layui.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>大兵首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
 </head>
+<style>
+    body {
+        overflow: scroll;
+    }
 
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <a href="">
-            <div class="layui-logo">个人首页管理</div>
-        </a>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-    <#--<ul class="layui-nav layui-layout-left">-->
-    <#--<li class="layui-nav-item">-->
-    <#--<a href="/">返回前台</a>-->
-    <#--</li>-->
-    <#--<li class="layui-nav-item">-->
-    <#--<a href="">商品管理</a>-->
-    <#--</li>-->
-    <#--<li class="layui-nav-item">-->
-    <#--<a href="">用户</a>-->
-    <#--</li>-->
-    <#--</ul>-->
-        <ul class="layui-nav layui-layout-right">
-            <a href="javascript:void(0);" class="layTabPlus"
-               tab_url="${request.contextPath}/sys/user/info.html?userId=${sysUser.userId}"
-               style="font-size: large">个人信息</a>
-        </ul>
-    </div>
-    <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree">
-                <#list menuList as prantMenu>
-                    <li class="layui-nav-item <#if prantMenu_index==0>layui-nav-itemed</#if>">
-                        <a href="javascript:;">${prantMenu.name!}</a>
-                        <dl class="layui-nav-child">
-                            <#list prantMenu.list as childMenu>
-                                <dd><a href="javascript:void(0);" class="layTabPlus"
-                                       tab_url="${childMenu.url}">${childMenu.name}</a></dd>
-                            </#list>
-                        </dl>
-                    </li>
-                </#list>
-            </ul>
+    .search {
+        top: 100px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%); /* 移动元素本身50% */
+    }
+
+    .content {
+        position: absolute;
+        top: 200px;
+        width: 80%;
+        left: 10%;
+        right: 10%;
+    }
+
+    .item {
+        position: relative;
+        float: left;
+        width: 7%;
+        padding: 1%;
+    }
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    ul span {
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+<div class="search">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" id="searchVal" autocomplete="off" placeholder="百度一下"
+                   class="layui-input">
         </div>
+        <button id="search" class="layui-btn">百度一下</button>
     </div>
-<#-- style="background: linear-gradient(to left bottom, hsl(198, 100%, 85%) 0%,hsl(215, 100%, 85%) 100%);"-->
-    <div class="layui-body"
-         style="background: url('${request.contextPath}/statics/images/bg1.png')no-repeat;background-size: 100% 100%">
-        <!-- 内容主体区域 -->
-        <div class="layui-tab" lay-filter="demoTab" lay-allowClose="true">
-            <ul class="layui-tab-title">
-            <#--<li class="layui-this" lay-id='base_info'>基本信息</li>-->
-            </ul>
-            <div class="layui-tab-content" style="padding:0px;">
-            <#--<div class="layui-tab-item layui-show">-->
-            <#--<div class="sysNotice col">-->
-            <#--<blockquote class="layui-elem-quote title">基本信息</blockquote>-->
-            <#--<table class="layui-table">-->
-            <#--<tbody>-->
-            <#--<tr>-->
-            <#--<td>当前版本</td>-->
-            <#--<td class="version">V1.2</td>-->
-            <#--</tr>-->
-            <#--<tr>-->
-            <#--<td>开发作者</td>-->
-            <#--<td class="author">Leytton</td>-->
-            <#--</tr>-->
-            <#--<tr>-->
-            <#--<td>项目首页</td>-->
-            <#--<td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">https://gitee.com/Leytton/layTabPlus</a></td>-->
-            <#--</tr>-->
-            <#--<tr>-->
-            <#--<td colspan="2">-->
-            <#--<script src='https://gitee.com/Leytton/layTabPlus/widget_preview'></script>-->
-            <#--<style>-->
-            <#--.pro_name a{color: #4183c4;}-->
-            <#--.osc_git_title{background-color: #fff;}-->
-            <#--.osc_git_box{background-color: #fff;}-->
-            <#--.osc_git_box{border-color: #E3E9ED;}-->
-            <#--.osc_git_info{color: #666;}-->
-            <#--.osc_git_main a{color: #9B9B9B;}-->
-            <#--</style>-->
-            <#--</td>-->
-            <#--</tr>-->
-            <#--</tbody>-->
-            <#--</table>-->
-            <#--</div>-->
-            <#--</div>-->
-            </div>
-        </div>
-    </div>
-    <div class="layui-footer">
-        © 2018 <a>数据服务平台</a>
-    </div>
-    <a style="display: none" id="download"></a>
 </div>
-<script src="${request.contextPath}/static/lib/jquery.min.js" charset="utf-8"></script>
-<script src="${request.contextPath}/static/plugin/layui/layui.js"></script>
-<script>
-    var $ = layui.jquery;
-    var layer = layui.layer;
-    var element = layui.element;
-    var util = layui.util;
-    var table = layui.table;
-</script>
-<script src="${request.contextPath}/static/plugin/layTabPlus.js"></script>
-<script>
-    layTabPlus.init({
-        lay_filter: 'demoTab'
-    });
-    $("dd :eq(0)").click();
-    $(function () {
 
-        $(".layui-nav-item").eq(2).hide();
-    })
+<div class="content">
+    <ul>
+        <#list homeIndex as index>
+             <li data="${index.url}" class="item">
+            <img class="clickUrl" src="data:image/x-icon;base64,${index.ico}">
+            <span class="clickUrl">${index.name}</span>
+        </#list>
+    </ul>
+</div>
+<script src="${request.contextPath}/static/plugin/layui/layui.js"></script>
+<script src="${request.contextPath}/static/lib/jquery.min.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['jquery', 'table', 'form', 'layer', 'util', 'element '], function () {
+        var table = layui.table
+                , form = layui.form
+                , layer = layui.layer
+                , util = layui.util
+                , element = layui.element;
+        $ = layui.jquery;
+
+
+    });
+
+    var width = $(".item:first").width();
+    $(".item").height(width);
+    $("img").height(width * 0.7).width(width * 0.7);
+    // $("img").width(width);
+
+    $("li").click(function () {
+        window.open('http://' + $(this).attr('data'));
+    });
+    // 搜索事件
+    $("#search").click(function () {
+        var searchVal = $("#searchVal").val();
+        window.open('https://www.baidu.com/s?wd=' + searchVal);
+    });
 </script>
 </body>
-
 </html>

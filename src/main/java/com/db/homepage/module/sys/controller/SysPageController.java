@@ -1,5 +1,8 @@
 package com.db.homepage.module.sys.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.db.homepage.module.admin.entity.HomeIndex;
+import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.sys.service.SysMenuService;
 import com.db.homepage.module.sys.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SysPageController {
     @Autowired
     private SysMenuService sysMenuService;
+    @Autowired
+    private HomeIndexService indexService;
 
     @RequestMapping("modules/{module}/{url}.html")
     public String module(@PathVariable("module") String module, @PathVariable("url") String url) {
@@ -30,6 +35,13 @@ public class SysPageController {
         return "index";
     }
 
+    @RequestMapping("index1.html")
+    public String index1(Model model) {
+        QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("sort");
+        model.addAttribute("homeIndex", indexService.list(wrapper));
+        return "index1";
+    }
 
     @RequestMapping("login.html")
     public String login() {
