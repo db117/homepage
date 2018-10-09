@@ -73,13 +73,14 @@ public class HomeIndexController {
     @RequestMapping("save")
     @ResponseBody
     public Result save(HomeIndex homeIndex) {
+        bizCache.clear();
         if (StrUtil.isBlank(homeIndex.getIco())) {
 //            String favicon = "http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=" + homeIndex.getUrl();
             String favicon = "http://" + homeIndex.getUrl() + "/favicon.ico";
 
             HttpResponse execute = HttpUtil.createGet(favicon).execute();
 
-            if (execute.getStatus() == 301) {
+            if (execute.getStatus() != 200) {
                 favicon = "https://" + homeIndex.getUrl() + "/favicon.ico";
                 homeIndex.setIco(Base64.encode(HttpUtil.createGet(favicon).execute().bodyStream()));
             } else {
@@ -90,7 +91,7 @@ public class HomeIndexController {
             return Result.getBool(indexService.save(homeIndex));
         }
 
-        bizCache.clear();
+
         return Result.getBool(indexService.updateById(homeIndex));
     }
 

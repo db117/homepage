@@ -41,7 +41,7 @@ ul span {
 .link_li {
     position: relative;
     float: left;
-    width: 7%;
+    width: auto;
     padding: 1%;
 }
 

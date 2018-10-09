@@ -53,7 +53,8 @@
             <select name="typeId" id="typeId" lay-verify="required" lay-search="">
                 <option value="">直接选择或搜索选择</option>
                 <#list types as type>
-                    <option value="${type.id}" <#if type_id??&&type_id =type.id>selected</#if>>${type.name}</option>
+                    <option value="${type.id}"
+                            <#if (type_id??&&type_id =type.id)||(homeLink.typeId??&&type.id=homeLink.typeId)>selected</#if>>${type.name}</option>
                 </#list>
             </select>
         </div>
