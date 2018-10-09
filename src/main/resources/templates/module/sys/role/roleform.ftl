@@ -6,11 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="${Request.request.contextPath}/static/plugin/ztree/css/metroStyle/metroStyle.css"
-          type="text/css">
-    <script type="text/javascript" src="${Request.request.contextPath}/static/lib/jquery.min.js"></script>
-    <script type="text/javascript"
-            src="${Request.request.contextPath}/static/plugin/ztree/jquery.ztree.all.min.js"></script>
+<#--<link rel="stylesheet" href="${Request.request.contextPath}/static/plugin/ztree/css/metroStyle/metroStyle.css"-->
+<#--type="text/css">-->
+<#--<script type="text/javascript" src="${Request.request.contextPath}/static/lib/jquery.min.js"></script>-->
+<#--<script type="text/javascript"-->
+<#--src="${Request.request.contextPath}/static/plugin/ztree/jquery.ztree.all.min.js"></script>-->
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zTree.v3/3.5.33/js/jquery.ztree.all.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/zTree.v3/3.5.33/css/metroStyle/metroStyle.min.css"
+          rel="stylesheet">
     <style>
         body {
             overflow-y: scroll;

@@ -58,6 +58,7 @@ public class HomeIndexController {
         QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("sort");
         wrapper.like(StrUtil.isNotBlank(index.getName()), "name", index.getName());
+        wrapper.select(HomeIndex.class, i -> !"ico".equals(i.getProperty()));
         return Result.getPage(indexService.page(page, wrapper));
     }
 
@@ -76,16 +77,12 @@ public class HomeIndexController {
         bizCache.clear();
         if (StrUtil.isBlank(homeIndex.getIco())) {
 //            String favicon = "http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=" + homeIndex.getUrl();
-            String favicon = "http://" + homeIndex.getUrl() + "/favicon.ico";
+            String favicon = homeIndex.getUrl() + "/favicon.ico";
 
             HttpResponse execute = HttpUtil.createGet(favicon).execute();
 
-            if (execute.getStatus() != 200) {
-                favicon = "https://" + homeIndex.getUrl() + "/favicon.ico";
-                homeIndex.setIco(Base64.encode(HttpUtil.createGet(favicon).execute().bodyStream()));
-            } else {
-                homeIndex.setIco(Base64.encode(execute.bodyStream()));
-            }
+            homeIndex.setIco(Base64.encode(execute.bodyStream()));
+
         }
         if (homeIndex.getId() == null) {
             return Result.getBool(indexService.save(homeIndex));

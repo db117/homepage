@@ -1,23 +1,17 @@
-layui.use(['jquery', 'table', 'form', 'layer', 'util', 'element '], function () {
-    var table = layui.table
-        , form = layui.form
-        , layer = layui.layer
-        , util = layui.util
-        , element = layui.element;
-    $ = layui.jquery;
-
-
-});
-
-// 图片宽度
-var width = $(".item:first").width();
-$(".item").height(width);
-$("img").height(width * 0.7).width(width * 0.7);
-// $("img").width(width);
+// layui.use(['jquery', 'table', 'form', 'layer', 'util', 'element '], function () {
+//     var table = layui.table
+//         , form = layui.form
+//         , layer = layui.layer
+//         , util = layui.util
+//         , element = layui.element;
+//     $ = layui.jquery;
+//
+//
+// });
 
 // 打开页面
 $(".item").click(function () {
-    window.open('http://' + $(this).attr('data'));
+    window.open($(this).attr('data'));
 });
 
 // 打开页面

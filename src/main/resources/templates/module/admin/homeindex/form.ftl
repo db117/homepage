@@ -34,8 +34,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label" for="url">链接</label>
         <div class="layui-input-block">
-            <input type="text" name="url" id="url" lay-verify="required" autocomplete="off"
-                   placeholder="不需要填写http、https" value="${homeIndex.url!}" class="layui-input">
+            <input type="text" name="url" id="url" lay-verify="required|url" autocomplete="off"
+                   placeholder="需要填写http、https" value="${homeIndex.url!}" class="layui-input">
         </div>
     </div>
 
