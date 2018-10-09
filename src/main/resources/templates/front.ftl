@@ -18,13 +18,15 @@
 <body>
 <a href="/adminIndex.html" class="layui-btn layui-bg-blue login">管理</a>
 <div class="search">
-    <div class="layui-form-item">
-        <div class="layui-input-inline">
-            <input type="text" id="searchVal" autocomplete="off" placeholder="百度一下"
-                   class="layui-input">
+    <form action="http://www.baidu.com/baidu" target="_blank">
+        <div class="layui-form-item">
+            <div class="search_div">
+                <input type="text" id="searchVal" name="word" autocomplete="off" placeholder="百度一下" baiduSug="1"
+                       class="layui-input">
+            </div>
+            <button id="search" type="submit" class="layui-btn">百度一下</button>
         </div>
-        <button id="search" class="layui-btn">百度一下</button>
-    </div>
+    </form>
 </div>
 
 <div class="content">
@@ -63,5 +65,6 @@
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <#--<script src="${request.contextPath}/static/lib/jquery.min.js"></script>-->
 <script src="${request.contextPath}/static/js/front.js"></script>
+<script type="text/javascript" src="http://www.baidu.com/js/opensug.js"></script>
 </body>
 </html>
