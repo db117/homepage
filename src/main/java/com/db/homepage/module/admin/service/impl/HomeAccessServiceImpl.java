@@ -33,9 +33,9 @@ public class HomeAccessServiceImpl extends ServiceImpl<HomeAccessMapper, HomeAcc
 
         // 一个小时内部重复记录
         if (cache.get(ip) == null) {
-            baseMapper.insert(homeAccess);
-
             cache.put(ip, ip);
+
+            baseMapper.insert(homeAccess);
         }
     }
 }

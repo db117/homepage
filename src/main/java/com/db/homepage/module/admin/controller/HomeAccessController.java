@@ -9,7 +9,6 @@ import com.db.homepage.module.admin.entity.HomeAccess;
 import com.db.homepage.module.admin.service.HomeAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,9 +30,7 @@ public class HomeAccessController {
      * 列表
      */
     @RequestMapping(value = "list.html")
-    public String list(Model model) {
-        QueryWrapper<HomeAccess> wrapper = new QueryWrapper<>();
-
+    public String list() {
         return "module/admin/access/list";
     }
 
@@ -47,7 +44,7 @@ public class HomeAccessController {
     @ResponseBody
     public Result data(Page<HomeAccess> page, HomeAccess access) {
         QueryWrapper<HomeAccess> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("id");
+        wrapper.orderByDesc("id");
         wrapper.like(StrUtil.isNotBlank(access.getIp()), "ip", access.getIp());
         return Result.getPage(accessService.page(page, wrapper));
     }
