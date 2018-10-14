@@ -1,5 +1,6 @@
 package com.db.homepage.module.sys.controller;
 
+import com.db.homepage.module.admin.service.HomeAccessService;
 import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.sys.service.SysMenuService;
 import com.db.homepage.module.sys.shiro.ShiroUtils;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 系统页面视图
@@ -20,6 +23,8 @@ public class SysPageController {
     private SysMenuService sysMenuService;
     @Autowired
     private HomeIndexService indexService;
+    @Autowired
+    private HomeAccessService accessService;
 
     @RequestMapping("modules/{module}/{url}.html")
     public String module(@PathVariable("module") String module, @PathVariable("url") String url) {
@@ -27,7 +32,8 @@ public class SysPageController {
     }
 
     @RequestMapping(value = {"/", "index.html"})
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
+        accessService.access(request);
         model.addAttribute("homeVo", indexService.getHomeVo());
         return "front";
     }

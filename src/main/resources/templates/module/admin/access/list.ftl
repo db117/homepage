@@ -13,17 +13,14 @@
     </style>
 </head>
 <body>
-
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <div class="layui-btn-group demoTable">
-        <button class="layui-btn layui-btn-normal layui-btn-radius" data-type="addObject">添加链接</button>
-    </div>
+    <legend>访问记录</legend>
 </fieldset>
 <div class="demoTable layui-form">
     <div class="layui-inline">
-        <label class="layui-form-label" for="name">名称</label>
+        <label class="layui-form-label" for="name">ip</label>
         <div class="layui-input-inline">
-            <input class="layui-input" id="name" autocomplete="off">
+            <input class="layui-input" id="ip" autocomplete="off">
         </div>
     </div>
 
@@ -46,40 +43,21 @@
         //表头
         var clos = [//表头
             // {checkbox: true, fixed: true}
-            {title: '名称', field: 'name'},
-            {title: '链接', field: 'url'},
-            {title: '排序', field: 'sort'},
+            {title: 'ip', field: 'ip'},
             {
-                title: '创建时间', field: 'createDate'
+                title: '登录时间', field: 'createDate'
                 , templet: '<div>{{ layui.util.toDateString(d.createDate) }}</div>'
             }
-            , {field: 'tools', fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
         ];
-        tableRender('#LAY_table_object', '${request.contextPath}/admin/homeIndex/data', clos);
+        tableRender('#LAY_table_object', '${request.contextPath}/admin/homeAccess/data', clos);
 
-        //监听工具条
-        table.on('tool(task)', function (obj) {    //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-            var data = obj.data;                    //获得当前行数据
-            var layEvent = obj.event;               //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-            var tr = obj.tr;                        //获得当前行 tr 的DOM对象
-            var id = data.id;
-
-            if (layEvent === 'del') {          //删除
-                dataDel(obj, '${request.contextPath}/admin/homeIndex/delete?id=' + id);
-            } else if (layEvent === 'edit') {        //编辑
-                openFull('${request.contextPath}/admin/homeIndex/form.html?id=' + id, '编辑');
-            }
-        });
 
         active = {
             reload: function () {
                 //执行重载
                 tableReload({
-                    name: $('#name').val()
+                    ip: $('#ip').val()
                 });
-            }
-            , addObject: function () {
-                openFull('${request.contextPath}/admin/homeIndex/form.html', '添加链接');
             }
         };
 
@@ -88,12 +66,6 @@
             active[type] ? active[type].call(this) : '';
         });
 
-        //监听复选框选择
-        table.on('checkbox(testReload)', function (obj) {
-            console.log(obj.checked); //当前是否选中状态
-            console.log(obj.data); //选中行的相关数据
-            console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
-        });
     });
 </script>
 <script type="text/html" id="barDemo">
