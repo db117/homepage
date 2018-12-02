@@ -22,7 +22,7 @@ spring:
     cache: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     druid:
       url: jdbc:mysql://47.244.7.11:3307/homepage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
       username: root
