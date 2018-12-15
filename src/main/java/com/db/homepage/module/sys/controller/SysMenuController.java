@@ -110,6 +110,9 @@ public class SysMenuController extends AbstractController {
         //数据校验
         verifyForm(menu);
 
+        if (menu.getOrderNum() == null) {
+            menu.setOrderNum(100);
+        }
         sysMenuService.save(menu);
 
         sysCache.clear();
@@ -193,7 +196,6 @@ public class SysMenuController extends AbstractController {
             if (parentType != Constant.MenuType.MENU.getValue()) {
                 throw new DbException("上级菜单只能为菜单类型");
             }
-            return;
         }
     }
 }
