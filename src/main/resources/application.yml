@@ -26,7 +26,7 @@ spring:
     druid:
       url: jdbc:mysql://140.143.241.208:3307/homepage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
       username: root
-      password: 123456
+      password: 4545fgjfg&*_)
       initial-size: 10
       max-active: 100
       min-idle: 10
