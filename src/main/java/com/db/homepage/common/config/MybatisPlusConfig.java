@@ -1,7 +1,5 @@
 package com.db.homepage.common.config;
 
-import com.baomidou.mybatisplus.core.injector.ISqlInjector;
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -29,13 +27,5 @@ public class MybatisPlusConfig {
     @Bean
     public PerformanceInterceptor performanceInterceptor() {
         return new PerformanceInterceptor().setFormat(true);
-    }
-
-    /**
-     * 逻辑删除
-     */
-    @Bean
-    public ISqlInjector logicSqlInjector() {
-        return new LogicSqlInjector();
     }
 }

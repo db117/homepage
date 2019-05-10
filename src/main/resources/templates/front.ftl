@@ -18,13 +18,13 @@
 <body>
 <a href="/adminIndex.html" class="layui-btn layui-bg-blue login">管理</a>
 <div class="search">
-    <form action="http://www.baidu.com/baidu" target="_blank">
+    <form action="https://mijisou.com/" target="_blank">
         <div class="layui-form-item">
             <div class="search_div">
-                <input type="text" id="searchVal" name="word" autocomplete="off" placeholder="百度一下" baiduSug="1"
+                <input type="text" id="searchVal" name="q" autocomplete="off" placeholder="秘迹搜索" baiduSug="1"
                        class="layui-input">
             </div>
-            <button id="search" type="submit" class="layui-btn">百度一下</button>
+            <button id="search" type="submit" class="layui-btn">秘迹搜索</button>
         </div>
     </form>
 </div>
@@ -32,11 +32,11 @@
 <div class="content">
     <div class="index">
         <ul>
-        <#list homeVo.indexList as index>
-             <li data="${index.url}" class="item">
-            <img class="clickUrl" src="data:image/x-icon;base64,${index.ico}">
-            <span class="clickUrl">${index.name}</span>
-        </#list>
+            <#list homeVo.indexList as index>
+            <li data="${index.url}" class="item">
+                <img class="clickUrl" src="data:image/x-icon;base64,${index.ico}">
+                <span class="clickUrl">${index.name}</span>
+                </#list>
         </ul>
     </div>
 
@@ -49,11 +49,11 @@
                     <legend>${type.name}</legend>
                 </fieldset>
                 <ul class="link_ul">
-            <#list type.linkList as link>
-                <li class="link_li" data="${link.url}">
-                    <button class="layui-btn layui-bg-green">${link.name}</button>
-                </li>
-            </#list>
+                    <#list type.linkList as link>
+                        <li class="link_li" data="${link.url}">
+                            <button class="layui-btn layui-bg-green">${link.name}</button>
+                        </li>
+                    </#list>
                 </ul>
             </div>
             <div class="clearfloat"></div>

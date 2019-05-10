@@ -2,7 +2,6 @@ package com.db.homepage.common.utils;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.db.homepage.module.admin.entity.HomeIndex;
 import com.db.homepage.module.admin.entity.HomeLink;
 import com.db.homepage.module.admin.entity.HomeType;
@@ -51,9 +50,7 @@ public class BizCache {
     public List<HomeIndex> findAllIndex() {
         List<HomeIndex> list = (List<HomeIndex>) cache.get(HOME_INDEX);
         if (list == null) {
-            QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
-            wrapper.orderByAsc("sort");
-            list = indexService.list(wrapper);
+            list = indexService.lambdaQuery().orderByAsc(HomeIndex::getSort).list();
             cache.put(HOME_INDEX, list);
         }
         return list;
@@ -65,9 +62,7 @@ public class BizCache {
     public List<HomeType> findAllType() {
         List<HomeType> list = (List<HomeType>) cache.get(HOME_TYPE);
         if (list == null) {
-            QueryWrapper<HomeType> wrapper = new QueryWrapper<>();
-            wrapper.orderByAsc("sort");
-            list = typeService.list(wrapper);
+            list = typeService.lambdaQuery().orderByAsc(HomeType::getSort).list();
             cache.put(HOME_TYPE, list);
         }
         return list;
@@ -79,9 +74,7 @@ public class BizCache {
     public List<HomeLink> findAllLink() {
         List<HomeLink> list = (List<HomeLink>) cache.get(HOME_LINK);
         if (list == null) {
-            QueryWrapper<HomeLink> wrapper = new QueryWrapper<>();
-            wrapper.orderByAsc("sort");
-            list = linkService.list(wrapper);
+            list = linkService.lambdaQuery().orderByAsc(HomeLink::getSort).list();
             cache.put(HOME_LINK, list);
         }
         return list;
@@ -94,7 +87,8 @@ public class BizCache {
      * @return 网址集合
      */
     public List<HomeLink> findLinkByTypeId(Long typeId) {
-        return findAllLink().stream().filter(l -> l.getTypeId().equals(typeId)).sorted(Comparator.comparing(HomeLink::getSort)).collect(Collectors.toList());
+        return findAllLink().stream().filter(l -> l.getTypeId().equals(typeId))
+                .sorted(Comparator.comparing(HomeLink::getSort)).collect(Collectors.toList());
     }
 
     public void clear() {
