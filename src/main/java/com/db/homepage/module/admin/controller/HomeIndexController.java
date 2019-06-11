@@ -88,7 +88,7 @@ public class HomeIndexController {
                 // 被墙了会报错
                 log.error(e.getMessage(), e);
             }
-            if (execute != null) {
+            if (execute != null && execute.getStatus() == 200) {
                 homeIndex.setIco(Base64.encode(execute.bodyStream()));
             }
 

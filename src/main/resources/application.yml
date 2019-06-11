@@ -43,11 +43,3 @@ mybatis-plus:
       #逻辑删除配置
       logic-delete-value: 1
       logic-not-delete-value: 0
-      db-type: mysql
-
-
-logging:
-  level:
-    com.db.homepage: DEBUG
-  path: /logs
-  file: homepage.log
