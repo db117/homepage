@@ -5,12 +5,12 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.homepage.common.utils.BizCache;
 import com.db.homepage.common.utils.Result;
 import com.db.homepage.module.admin.entity.HomeIndex;
 import com.db.homepage.module.admin.service.HomeIndexService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +32,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/admin/homeIndex")
+@Slf4j
 public class HomeIndexController {
     @Autowired
     private HomeIndexService indexService;
@@ -55,11 +56,11 @@ public class HomeIndexController {
     @RequestMapping(value = "data")
     @ResponseBody
     public Result data(Page<HomeIndex> page, HomeIndex index) {
-        QueryWrapper<HomeIndex> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("sort");
-        wrapper.like(StrUtil.isNotBlank(index.getName()), "name", index.getName());
-        wrapper.select(HomeIndex.class, i -> !"ico".equals(i.getProperty()));
-        return Result.getPage(indexService.page(page, wrapper));
+        return Result.getPage(indexService.lambdaQuery()
+                .select(HomeIndex.class, p -> !"ico".equalsIgnoreCase(p.getColumn()))
+                .orderByAsc(HomeIndex::getSort)
+                .like(StrUtil.isNotBlank(index.getName()), HomeIndex::getName, index.getName())
+                .page(page));
     }
 
     @RequestMapping("form.html")
@@ -75,13 +76,21 @@ public class HomeIndexController {
     @ResponseBody
     public Result save(HomeIndex homeIndex) {
         bizCache.clear();
+        // 获取图标
         if (StrUtil.isBlank(homeIndex.getIco())) {
 //            String favicon = "http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=" + homeIndex.getUrl();
             String favicon = homeIndex.getUrl() + "/favicon.ico";
 
-            HttpResponse execute = HttpUtil.createGet(favicon).execute();
-
-            homeIndex.setIco(Base64.encode(execute.bodyStream()));
+            HttpResponse execute = null;
+            try {
+                execute = HttpUtil.createGet(favicon).execute();
+            } catch (Exception e) {
+                // 被墙了会报错
+                log.error(e.getMessage(), e);
+            }
+            if (execute != null) {
+                homeIndex.setIco(Base64.encode(execute.bodyStream()));
+            }
 
         }
         if (homeIndex.getId() == null) {
