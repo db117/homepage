@@ -36,8 +36,6 @@ import java.util.Map;
 public class HomeIndexController {
     @Autowired
     private HomeIndexService indexService;
-    @Autowired
-    private BizCache bizCache;
 
     /**
      * 列表
@@ -75,7 +73,7 @@ public class HomeIndexController {
     @RequestMapping("save")
     @ResponseBody
     public Result save(HomeIndex homeIndex) {
-        bizCache.clear();
+        BizCache.clear();
         // 获取图标
         if (StrUtil.isBlank(homeIndex.getIco())) {
 //            String favicon = "http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=" + homeIndex.getUrl();
@@ -124,7 +122,7 @@ public class HomeIndexController {
     @RequestMapping("delete")
     @ResponseBody
     public Result delete(Long id) {
-        bizCache.clear();
+        BizCache.clear();
         return Result.getBool(indexService.removeById(id));
     }
 }

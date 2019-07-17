@@ -33,8 +33,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     private SysUserRoleService sysUserRoleService;
     @Autowired
     private SysDeptService sysDeptService;
-    @Autowired
-    private SysCache sysCache;
 
     @Override
     public List<Long> queryAllMenuId(Long userId) {
@@ -64,7 +62,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
             user.setPassword(null);
         } else {
 
-            user.setPassword(ShiroUtils.sha256(user.getPassword(), sysCache.getUserById(user.getUserId()).getSalt()));
+            user.setPassword(ShiroUtils.sha256(user.getPassword(), SysCache.getUserById(user.getUserId()).getSalt()));
         }
         this.updateById(user);
 

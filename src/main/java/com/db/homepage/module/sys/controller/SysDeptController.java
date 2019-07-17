@@ -24,8 +24,6 @@ import java.util.List;
 public class SysDeptController extends AbstractController {
     @Autowired
     private SysDeptService sysDeptService;
-    @Autowired
-    private SysCache sysCache;
 
     /**
      * 选择页面
@@ -52,7 +50,7 @@ public class SysDeptController extends AbstractController {
      */
     @GetMapping(value = "form.html")
     public String form(SysDeptEntity deptEntity, Model model) {
-        model.addAttribute("dept", sysCache.getDeptById(deptEntity.getDeptId()));
+        model.addAttribute("dept", SysCache.getDeptById(deptEntity.getDeptId()));
         return "module/sys/dept/deptform";
     }
 
@@ -62,7 +60,7 @@ public class SysDeptController extends AbstractController {
     @RequestMapping("/data")
     @ResponseBody
     public Result data() {
-        return Result.getPageRes((long) sysCache.getAllDept().size(), sysCache.getAllDept());
+        return Result.getPageRes((long) SysCache.getAllDept().size(), SysCache.getAllDept());
     }
 
     /**
@@ -71,7 +69,7 @@ public class SysDeptController extends AbstractController {
     @RequestMapping(value = "treeData")
     @ResponseBody
     public List<SysDeptEntity> treeData() {
-        List<SysDeptEntity> deptList = CollUtil.newArrayList(sysCache.getAllDept());
+        List<SysDeptEntity> deptList = CollUtil.newArrayList(SysCache.getAllDept());
 
         deptList.forEach(d -> {
             d.setOpen(true);
@@ -97,7 +95,7 @@ public class SysDeptController extends AbstractController {
     public Result save(SysDeptEntity dept) {
         sysDeptService.save(dept);
 
-        sysCache.clear();
+        SysCache.clear();
 
         return Result.getSuccess();
     }
@@ -110,7 +108,7 @@ public class SysDeptController extends AbstractController {
     public Result update(SysDeptEntity dept) {
         sysDeptService.updateById(dept);
 
-        sysCache.clear();
+        SysCache.clear();
 
         return Result.getSuccess();
     }
@@ -129,7 +127,7 @@ public class SysDeptController extends AbstractController {
 
         sysDeptService.removeById(deptId);
 
-        sysCache.clear();
+        SysCache.clear();
 
         return Result.getSuccess();
     }

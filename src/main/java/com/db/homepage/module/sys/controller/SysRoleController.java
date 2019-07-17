@@ -32,8 +32,6 @@ public class SysRoleController extends AbstractController {
     private SysRoleMenuService sysRoleMenuService;
     @Autowired
     private SysRoleDeptService sysRoleDeptService;
-    @Autowired
-    private SysCache sysCache;
 
     /**
      * 进入列表
@@ -57,7 +55,7 @@ public class SysRoleController extends AbstractController {
 
         //设置其他属性
         page.getRecords().forEach(role -> {
-            SysRoleEntity temp = sysCache.getRoleById(role.getRoleId());
+            SysRoleEntity temp = SysCache.getRoleById(role.getRoleId());
 
             role.setDeptIdList(temp.getDeptIdList());
             role.setMenuIdList(temp.getMenuIdList());
@@ -68,7 +66,7 @@ public class SysRoleController extends AbstractController {
 
     @GetMapping(value = "form.html")
     public String form(Model model, Long roleId) {
-        model.addAttribute("role", sysCache.getRoleById(roleId));
+        model.addAttribute("role", SysCache.getRoleById(roleId));
         return "module/sys/role/roleform";
     }
 
@@ -83,7 +81,7 @@ public class SysRoleController extends AbstractController {
 
         sysRoleService.save1(role);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -97,7 +95,7 @@ public class SysRoleController extends AbstractController {
 
         sysRoleService.update(role);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -110,7 +108,7 @@ public class SysRoleController extends AbstractController {
     public Result delete(Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 }

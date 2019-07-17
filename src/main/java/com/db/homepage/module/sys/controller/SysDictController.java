@@ -28,8 +28,6 @@ import java.util.Arrays;
 public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
-    @Autowired
-    private SysCache sysCache;
 
     /**
      * 进入列表页面
@@ -58,7 +56,7 @@ public class SysDictController {
      */
     @GetMapping(value = "form.html")
     public String form(Long id, Model model) {
-        model.addAttribute("dict", sysCache.getDictById(id));
+        model.addAttribute("dict", SysCache.getDictById(id));
         return "module/sys/dict/dictform";
     }
 
@@ -69,10 +67,10 @@ public class SysDictController {
      */
     @GetMapping(value = "form2.html")
     public String form2(Long id, Model model) {
-        SysDictEntity dict = sysCache.getDictById(id);
+        SysDictEntity dict = SysCache.getDictById(id);
         SysDictEntity temp = new SysDictEntity();
         temp.setName(dict.getName());
-        temp.setOrderNum(sysCache.getMaxOrderNum(dict.getType()));
+        temp.setOrderNum(SysCache.getMaxOrderNum(dict.getType()));
         temp.setType(dict.getType());
         temp.setRemark(dict.getRemark());
         temp.setCode(dict.getCode() + "1");
@@ -90,7 +88,7 @@ public class SysDictController {
 
         sysDictService.save(dict);
 
-        sysCache.clear();
+        SysCache.clear();
 
         return Result.getSuccess();
     }
@@ -104,7 +102,7 @@ public class SysDictController {
 
         sysDictService.updateById(dict);
 
-        sysCache.clear();
+        SysCache.clear();
 
         return Result.getSuccess();
     }
@@ -117,7 +115,7 @@ public class SysDictController {
     public Result delete(Long[] ids) {
         sysDictService.removeByIds(Arrays.asList(ids));
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 

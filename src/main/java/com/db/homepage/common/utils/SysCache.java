@@ -62,26 +62,26 @@ public class SysCache {
             .maximumSize(1000)
             .initialCapacity(128).build();
 
-    private SysDictService sysDictService = SpringContextUtils.getType(SysDictService.class);
+    private static SysDictService sysDictService = SpringContextUtils.getType(SysDictService.class);
 
-    private SysUserService sysUserService = SpringContextUtils.getType(SysUserService.class);
+    private static SysUserService sysUserService = SpringContextUtils.getType(SysUserService.class);
 
-    private SysDeptService sysDeptService = SpringContextUtils.getType(SysDeptService.class);
+    private static SysDeptService sysDeptService = SpringContextUtils.getType(SysDeptService.class);
 
-    private SysRoleService sysRoleService = SpringContextUtils.getType(SysRoleService.class);
+    private static SysRoleService sysRoleService = SpringContextUtils.getType(SysRoleService.class);
 
-    private SysUserRoleService sysUserRoleService = SpringContextUtils.getType(SysUserRoleService.class);
+    private static SysUserRoleService sysUserRoleService = SpringContextUtils.getType(SysUserRoleService.class);
+    private static SysRoleDeptService sysRoleDeptService = SpringContextUtils.getType(SysRoleDeptService.class);
+    private static SysMenuService sysMenuService = SpringContextUtils.getType(SysMenuService.class);
+    private static SysRoleMenuService sysRoleMenuService = SpringContextUtils.getType(SysRoleMenuService.class);
 
-    private SysRoleDeptService sysRoleDeptService = SpringContextUtils.getType(SysRoleDeptService.class);
-
-    private SysMenuService sysMenuService = SpringContextUtils.getType(SysMenuService.class);
-
-    private SysRoleMenuService sysRoleMenuService = SpringContextUtils.getType(SysRoleMenuService.class);
+    private SysCache() {
+    }
 
     /**
      * 获取所有字典
      */
-    public List<SysDictEntity> getAllDict() {
+    public static List<SysDictEntity> getAllDict() {
         try {
             return (List<SysDictEntity>) cache.get(DICT_KEY, () -> sysDictService.lambdaQuery().list());
         } catch (ExecutionException e) {
@@ -96,7 +96,7 @@ public class SysCache {
      * @param id 字典id
      * @return 字典对象
      */
-    public SysDictEntity getDictById(Long id) {
+    public static SysDictEntity getDictById(Long id) {
         try {
             return (SysDictEntity) cache.get(DICT_KEY + "_by_id_" + id, () ->
                     getAllDict().stream().filter(d -> d.getId().equals(id)).findFirst().orElse(null));
@@ -112,7 +112,7 @@ public class SysCache {
      * @param type 类型
      * @return 排序
      */
-    public Integer getMaxOrderNum(String type) {
+    public static Integer getMaxOrderNum(String type) {
         int l = 0;
         try {
             l = (int) cache.get(DICT_KEY + "_max_order_num" + type, () -> getAllDict().stream().filter(d -> d.getType().equals(type))
@@ -129,7 +129,7 @@ public class SysCache {
      *
      * @param type 字典类型
      */
-    public List<SysDictEntity> getDictByType(String type) {
+    public static List<SysDictEntity> getDictByType(String type) {
         if (StrUtil.isBlank(type)) {
             return new ArrayList<>();
         }
@@ -143,7 +143,7 @@ public class SysCache {
      * @param type 字典类型
      * @param code 字典码
      */
-    public SysDictEntity getDictByTypeAndCode(String type, String code) {
+    public static SysDictEntity getDictByTypeAndCode(String type, String code) {
         if (StrUtil.isBlank(type) || StrUtil.isBlank(code)) {
             return null;
         }
@@ -153,7 +153,7 @@ public class SysCache {
     /**
      * 获取所有用户
      */
-    public List<SysUserEntity> getAllUser() {
+    public static List<SysUserEntity> getAllUser() {
         try {
             return (List<SysUserEntity>) cache.get(USER_KEY, () -> sysUserService.lambdaQuery().list());
         } catch (ExecutionException e) {
@@ -167,7 +167,7 @@ public class SysCache {
      *
      * @param id 用户id
      */
-    public SysUserEntity getUserById(Long id) {
+    public static SysUserEntity getUserById(Long id) {
         if (Objects.isNull(id)) {
             return null;
         }
@@ -186,7 +186,7 @@ public class SysCache {
      * @param username 用户名
      * @return 用户
      */
-    public SysUserEntity getUserByUsername(String username) {
+    public static SysUserEntity getUserByUsername(String username) {
         if (Objects.isNull(username)) {
             return null;
         }
@@ -204,7 +204,7 @@ public class SysCache {
      *
      * @param deptId 机构id
      */
-    public List<SysUserEntity> getUserByDeptId(Long deptId) {
+    public static List<SysUserEntity> getUserByDeptId(Long deptId) {
         if (Objects.isNull(deptId)) {
             return Lists.newArrayList();
         }
@@ -220,7 +220,7 @@ public class SysCache {
     /**
      * 获取所有的角色
      */
-    public List<SysRoleEntity> getAllRole() {
+    public static List<SysRoleEntity> getAllRole() {
 
         try {
             return (List<SysRoleEntity>) cache.get(ROLE_KEY, () -> {
@@ -246,7 +246,7 @@ public class SysCache {
      * @param id 角色id
      * @return 角色对象
      */
-    public SysRoleEntity getRoleById(Long id) {
+    public static SysRoleEntity getRoleById(Long id) {
         try {
             return (SysRoleEntity) cache.get(ROLE_KEY + "id", () ->
                     getAllRole().stream().filter(r -> r.getRoleId().equals(id)).findFirst().orElse(null));
@@ -262,7 +262,7 @@ public class SysCache {
      * @param userId 用户id
      * @return 角色列表
      */
-    public List<SysRoleEntity> getRoleByUserId(Long userId) {
+    public static List<SysRoleEntity> getRoleByUserId(Long userId) {
         List<SysRoleEntity> list = new ArrayList<>();
         try {
             List<SysRoleEntity> temp = (List<SysRoleEntity>) cache.get("getRoleByUserId" + userId, () ->
@@ -278,7 +278,7 @@ public class SysCache {
     /**
      * 获取所有的机构
      */
-    public List<SysDeptEntity> getAllDept() {
+    public static List<SysDeptEntity> getAllDept() {
         try {
             return (List<SysDeptEntity>) cache.get(DEPT_KEY, () -> {
                 List<SysDeptEntity> list = sysDeptService.lambdaQuery().list();
@@ -302,7 +302,7 @@ public class SysCache {
     /**
      * 获取所有的角色机构关联
      */
-    public List<SysRoleDeptEntity> getAllRoleDept() {
+    public static List<SysRoleDeptEntity> getAllRoleDept() {
         try {
             return (List<SysRoleDeptEntity>) cache.get(ROLE_DEPT_KEY, () ->
                     sysRoleDeptService.lambdaQuery().list());
@@ -318,7 +318,7 @@ public class SysCache {
      * @param id 机构id
      * @return 机构
      */
-    public SysDeptEntity getDeptById(Long id) {
+    public static SysDeptEntity getDeptById(Long id) {
         try {
             cache.get("getDeptById" + id, () ->
                     getAllDept().stream().filter(d -> d.getDeptId().equals(id)).findFirst().orElse(null));
@@ -333,7 +333,7 @@ public class SysCache {
      *
      * @param roleId 角色id
      */
-    public List<SysDeptEntity> getDeptByRoleId(Long roleId) {
+    public static List<SysDeptEntity> getDeptByRoleId(Long roleId) {
 
         List<Long> deptIds = getAllRoleDept().stream().filter(rd -> rd.getRoleId().equals(roleId)).map(SysRoleDeptEntity::getDeptId).collect(Collectors.toList());
 
@@ -343,7 +343,7 @@ public class SysCache {
     /**
      * 获取所有的用户角色关联
      */
-    public List<SysUserRoleEntity> getAllUserRole() {
+    public static List<SysUserRoleEntity> getAllUserRole() {
         try {
             return (List<SysUserRoleEntity>) cache.get(USER_ROLE_KEY, () -> sysUserRoleService.lambdaQuery().list());
         } catch (ExecutionException e) {
@@ -358,7 +358,7 @@ public class SysCache {
      * @param userId 用户id
      * @return 角色id集合
      */
-    public List<Long> getRoleIdByUserId(Long userId) {
+    public static List<Long> getRoleIdByUserId(Long userId) {
         try {
             return (List<Long>) cache.get("getRoleIdByUserId" + userId, () ->
                     getAllUserRole().stream().filter(ur -> ur.getUserId().equals(userId))
@@ -374,7 +374,7 @@ public class SysCache {
      *
      * @param userId 用户id
      */
-    public List<String> getPermsByUserId(Long userId) {
+    public static List<String> getPermsByUserId(Long userId) {
         try {
             return (List<String>) cache.get("getPermsByUserId" + userId, () ->
                     getMenuByUserId(userId).stream().map(SysMenuEntity::getPerms).collect(Collectors.toList()));
@@ -389,7 +389,7 @@ public class SysCache {
      *
      * @param userId 用户id
      */
-    public long[] getDeptIdByUserId(Long userId) {
+    public static long[] getDeptIdByUserId(Long userId) {
         try {
             return (long[]) cache.get("getDeptIdByUserId" + userId, () -> {
                 //获取用户所有的角色
@@ -414,7 +414,7 @@ public class SysCache {
     /**
      * 获取所有的菜单
      */
-    public List<SysMenuEntity> getAllMenu() {
+    public static List<SysMenuEntity> getAllMenu() {
         try {
             return (List<SysMenuEntity>) cache.get(MENU_KEY, () -> {
                 List<SysMenuEntity> list = sysMenuService.lambdaQuery().orderByAsc(SysMenuEntity::getOrderNum).list();
@@ -433,7 +433,7 @@ public class SysCache {
     /**
      * 获取所有非按钮菜单
      */
-    public List<SysMenuEntity> getMenuNotButten() {
+    public static List<SysMenuEntity> getMenuNotButten() {
         return getAllMenu().stream().filter(m -> !m.getType().equals(2)).collect(Collectors.toList());
     }
 
@@ -442,7 +442,7 @@ public class SysCache {
      *
      * @param id 菜单id
      */
-    public SysMenuEntity getMenuById(Long id) {
+    public static SysMenuEntity getMenuById(Long id) {
         return getAllMenu().stream().filter(m -> m.getMenuId().equals(id)).findFirst().orElse(new SysMenuEntity());
     }
 
@@ -451,7 +451,7 @@ public class SysCache {
      *
      * @param roleId 角色id
      */
-    public List<SysMenuEntity> getMenuByRoleId(long roleId) {
+    public static List<SysMenuEntity> getMenuByRoleId(long roleId) {
         List<Long> menuIds = getAllRoleMenu().stream().filter(rm -> rm.getRoleId().equals(roleId)).map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
 
         return getAllMenu().stream().filter(m -> menuIds.contains(m.getMenuId())).collect(Collectors.toList());
@@ -462,7 +462,7 @@ public class SysCache {
      *
      * @param userId 用户id
      */
-    public List<SysMenuEntity> getMenuByUserId(long userId) {
+    public static List<SysMenuEntity> getMenuByUserId(long userId) {
         List<Long> roles = getRoleIdByUserId(userId);
 
         List<Long> menus = getAllRoleMenu().stream().filter(rm -> roles.contains(rm.getRoleId())).map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
@@ -473,7 +473,7 @@ public class SysCache {
     /**
      * 获取所有的角色菜单关联
      */
-    public List<SysRoleMenuEntity> getAllRoleMenu() {
+    public static List<SysRoleMenuEntity> getAllRoleMenu() {
         try {
             return (List<SysRoleMenuEntity>) cache.get(ROLE_MENU_KEY, () -> sysRoleMenuService.lambdaQuery().list());
         } catch (ExecutionException e) {
@@ -485,7 +485,7 @@ public class SysCache {
     /**
      * 清空缓存
      */
-    public void clear() {
+    public static void clear() {
         cache.cleanUp();
     }
 }

@@ -33,8 +33,6 @@ public class SysUserController extends AbstractController {
     @Autowired
     private SysUserRoleService sysUserRoleService;
     @Autowired
-    private SysCache sysCache;
-    @Autowired
     private SysDeptService sysDeptService;
 
     /**
@@ -67,13 +65,13 @@ public class SysUserController extends AbstractController {
     public String form(SysUserEntity sysUserEntity, Model model) {
         SysUserEntity sysUser = sysUserService.getById(sysUserEntity.getUserId());
         if (Objects.nonNull(sysUser)) {
-            sysUser.setDeptName(sysCache.getDeptById(sysUser.getDeptId()).getName());
-            sysUser.setRoleIdList(sysCache.getRoleIdByUserId(sysUser.getUserId()));
+            sysUser.setDeptName(SysCache.getDeptById(sysUser.getDeptId()).getName());
+            sysUser.setRoleIdList(SysCache.getRoleIdByUserId(sysUser.getUserId()));
             model.addAttribute("sysUser", sysUser);
         } else {
             model.addAttribute("sysUser", new SysUserEntity());
         }
-        model.addAttribute("roleList", sysCache.getAllRole());
+        model.addAttribute("roleList", SysCache.getAllRole());
 
         return "module/sys/user/userform";
     }
@@ -113,7 +111,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.save1(user);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -127,7 +125,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.update(user);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -148,7 +146,7 @@ public class SysUserController extends AbstractController {
 
         sysUserService.removeByIds(Arrays.asList(userIds));
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -160,11 +158,11 @@ public class SysUserController extends AbstractController {
     @RequestMapping(value = "info.html")
     public String userInfo(String userId, Model model) {
         SysUserEntity sysUser = sysUserService.getById(userId);
-        sysUser.setDeptName(sysCache.getDeptById(sysUser.getDeptId()).getName());
-        sysUser.setRoleIdList(sysCache.getRoleIdByUserId(sysUser.getUserId()));
+        sysUser.setDeptName(SysCache.getDeptById(sysUser.getDeptId()).getName());
+        sysUser.setRoleIdList(SysCache.getRoleIdByUserId(sysUser.getUserId()));
         model.addAttribute("sysUser", sysUser);
 
-        model.addAttribute("roleList", sysCache.getAllRole());
+        model.addAttribute("roleList", SysCache.getAllRole());
         return "module/sys/user/userinfo";
     }
 }

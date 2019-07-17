@@ -26,8 +26,6 @@ import java.util.List;
 public class SysMenuController extends AbstractController {
     @Autowired
     private SysMenuService sysMenuService;
-    @Autowired
-    private SysCache sysCache;
 
     @GetMapping(value = "list.html")
     public String list1() {
@@ -49,13 +47,13 @@ public class SysMenuController extends AbstractController {
     @ResponseBody
     public Result listData() {
 
-        return Result.getPageRes((long) sysCache.getAllMenu().size(), sysCache.getAllMenu());
+        return Result.getPageRes((long) SysCache.getAllMenu().size(), SysCache.getAllMenu());
     }
 
     @RequestMapping(value = "treeData")
     @ResponseBody
     public List<SysMenuEntity> treeData() {
-        List<SysMenuEntity> list = CollUtil.newArrayList(sysCache.getMenuNotButten());
+        List<SysMenuEntity> list = CollUtil.newArrayList(SysCache.getMenuNotButten());
 
         list.forEach(m -> {
             m.setOpen(true);
@@ -77,7 +75,7 @@ public class SysMenuController extends AbstractController {
      */
     @GetMapping(value = "form.html")
     public String form(Long menuId, Model model) {
-        model.addAttribute("menu", sysCache.getMenuById(menuId));
+        model.addAttribute("menu", SysCache.getMenuById(menuId));
         return "module/sys/menu/menuform";
     }
 
@@ -115,7 +113,7 @@ public class SysMenuController extends AbstractController {
         }
         sysMenuService.save(menu);
 
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -130,7 +128,7 @@ public class SysMenuController extends AbstractController {
         verifyForm(menu);
 
         sysMenuService.updateById(menu);
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 
@@ -152,7 +150,7 @@ public class SysMenuController extends AbstractController {
         }
 
         sysMenuService.delete(menuId);
-        sysCache.clear();
+        SysCache.clear();
         return Result.getSuccess();
     }
 

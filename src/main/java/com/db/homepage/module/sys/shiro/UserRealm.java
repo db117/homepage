@@ -32,8 +32,6 @@ public class UserRealm extends AuthorizingRealm {
     private SysUserDao sysUserDao;
     @Autowired
     private SysMenuDao sysMenuDao;
-    @Autowired
-    private SysCache sysCache;
 
     /**
      * 授权(验证权限时调用)
@@ -48,14 +46,14 @@ public class UserRealm extends AuthorizingRealm {
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
 //            List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
-            List<SysMenuEntity> menuList = sysCache.getAllMenu();
+            List<SysMenuEntity> menuList = SysCache.getAllMenu();
             permsList = new ArrayList<>(menuList.size());
             for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
 //            permsList = sysUserDao.queryAllPerms(userId);
-            permsList = sysCache.getPermsByUserId(userId);
+            permsList = SysCache.getPermsByUserId(userId);
         }
 
         //用户权限列表
@@ -84,7 +82,7 @@ public class UserRealm extends AuthorizingRealm {
         SysUserEntity user = new SysUserEntity();
 //        user.setUsername(token.getUsername());
 //        user = sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", user.getUsername()));
-        user = sysCache.getUserByUsername(token.getUsername());
+        user = SysCache.getUserByUsername(token.getUsername());
         //账号不存在
         if (user == null) {
             throw new UnknownAccountException("账号或密码不正确");

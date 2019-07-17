@@ -44,14 +44,16 @@ public class BizCache {
             .expireAfterWrite(1, TimeUnit.HOURS)
             .maximumSize(1000)
             .initialCapacity(128).build();
-    private HomeIndexService indexService = SpringContextUtils.getType(HomeIndexService.class);
-    private HomeTypeService typeService = SpringContextUtils.getType(HomeTypeService.class);
-    private HomeLinkService linkService = SpringContextUtils.getType(HomeLinkService.class);
+    private static HomeIndexService indexService = SpringContextUtils.getType(HomeIndexService.class);
+    private static HomeTypeService typeService = SpringContextUtils.getType(HomeTypeService.class);
+    private static HomeLinkService linkService = SpringContextUtils.getType(HomeLinkService.class);
 
+    private BizCache() {
+    }
     /**
      * 获取所有首页标签
      */
-    public List<HomeIndex> findAllIndex() {
+    public static List<HomeIndex> findAllIndex() {
         try {
             return (List<HomeIndex>) cache.get(HOME_INDEX, () ->
                     indexService.lambdaQuery().orderByAsc(HomeIndex::getSort).list());
@@ -64,7 +66,7 @@ public class BizCache {
     /**
      * 获取所有分类
      */
-    public List<HomeType> findAllType() {
+    public static List<HomeType> findAllType() {
         try {
             return (List<HomeType>) cache.get(HOME_TYPE, () -> typeService.lambdaQuery().orderByAsc(HomeType::getSort).list());
         } catch (ExecutionException e) {
@@ -76,7 +78,7 @@ public class BizCache {
     /**
      * 获取所有网址
      */
-    public List<HomeLink> findAllLink() {
+    public static List<HomeLink> findAllLink() {
         try {
             return (List<HomeLink>) cache.get(HOME_LINK, () ->
                     linkService.lambdaQuery().orderByAsc(HomeLink::getSort).list());
@@ -92,7 +94,7 @@ public class BizCache {
      * @param typeId 类型id
      * @return 网址集合
      */
-    public List<HomeLink> findLinkByTypeId(Long typeId) {
+    public static List<HomeLink> findLinkByTypeId(Long typeId) {
         try {
             return (List<HomeLink>) cache.get(HOME_TYPE + typeId, () ->
                     findAllLink().stream().filter(l -> Objects.equals(l.getTypeId(), typeId))
@@ -103,7 +105,7 @@ public class BizCache {
         return Lists.newArrayList();
     }
 
-    public void clear() {
+    public static void clear() {
         cache.cleanUp();
     }
 }

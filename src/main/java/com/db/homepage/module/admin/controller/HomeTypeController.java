@@ -28,8 +28,6 @@ public class HomeTypeController {
 
     @Autowired
     private HomeTypeService typeService;
-    @Autowired
-    private BizCache bizCache;
 
     @RequestMapping("list.html")
     public String list() {
@@ -54,7 +52,7 @@ public class HomeTypeController {
     @RequestMapping("save")
     @ResponseBody
     public Result save(HomeType homeType) {
-        bizCache.clear();
+        BizCache.clear();
         if (homeType.getId() == null) {
             return Result.getBool(typeService.save(homeType));
         } else {
@@ -65,7 +63,7 @@ public class HomeTypeController {
     @ResponseBody
     @RequestMapping("delete")
     public Result delete(Long id) {
-        bizCache.clear();
+        BizCache.clear();
         return Result.getBool(typeService.removeById(id));
     }
 }

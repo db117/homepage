@@ -7,7 +7,6 @@ import com.db.homepage.module.admin.entity.HomeType;
 import com.db.homepage.module.admin.mapper.HomeIndexMapper;
 import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.admin.vo.HomeVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,19 +21,17 @@ import java.util.List;
  */
 @Service
 public class HomeIndexServiceImpl extends ServiceImpl<HomeIndexMapper, HomeIndex> implements HomeIndexService {
-    @Autowired
-    private BizCache bizCache;
 
     @Override
     public HomeVo getHomeVo() {
         HomeVo homeVo = new HomeVo();
-        homeVo.setIndexList(bizCache.findAllIndex());
+        homeVo.setIndexList(BizCache.findAllIndex());
 
-        List<HomeType> typeList = bizCache.findAllType();
+        List<HomeType> typeList = BizCache.findAllType();
 
         // 放入网址
         typeList.forEach(t -> {
-            t.setLinkList(bizCache.findLinkByTypeId(t.getId()));
+            t.setLinkList(BizCache.findLinkByTypeId(t.getId()));
         });
 
         homeVo.setTypeList(typeList);

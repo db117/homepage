@@ -30,8 +30,6 @@ public class HomeLinkController {
     private HomeLinkService linkService;
     @Autowired
     private HomeTypeService typeService;
-    @Autowired
-    private BizCache bizCache;
 
     @RequestMapping("list.html")
     public String list(Model model, Long typeId) {
@@ -61,7 +59,7 @@ public class HomeLinkController {
     @RequestMapping("save")
     @ResponseBody
     public Result save(HomeLink homeLink) {
-        bizCache.clear();
+        BizCache.clear();
         if (homeLink.getId() == null) {
             return Result.getBool(linkService.save(homeLink));
         } else {
@@ -72,7 +70,7 @@ public class HomeLinkController {
     @ResponseBody
     @RequestMapping("delete")
     public Result delete(Long id) {
-        bizCache.clear();
+        BizCache.clear();
         return Result.getBool(linkService.removeById(id));
     }
 
