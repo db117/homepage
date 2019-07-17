@@ -10,9 +10,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,10 +25,8 @@ import java.util.stream.Collectors;
  * @author 大兵
  * @date 2018-10-07 17:16
  **/
-@Component
 @SuppressWarnings("unchecked")
 @Slf4j
-@Order
 public class BizCache {
     /**
      * index缓存key
@@ -49,12 +44,9 @@ public class BizCache {
             .expireAfterWrite(1, TimeUnit.HOURS)
             .maximumSize(1000)
             .initialCapacity(128).build();
-    @Autowired
-    private HomeIndexService indexService;
-    @Autowired
-    private HomeTypeService typeService;
-    @Autowired
-    private HomeLinkService linkService;
+    private HomeIndexService indexService = SpringContextUtils.getType(HomeIndexService.class);
+    private HomeTypeService typeService = SpringContextUtils.getType(HomeTypeService.class);
+    private HomeLinkService linkService = SpringContextUtils.getType(HomeLinkService.class);
 
     /**
      * 获取所有首页标签

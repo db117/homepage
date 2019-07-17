@@ -8,9 +8,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +22,8 @@ import java.util.stream.Collectors;
  * @author 大兵
  * @date 2018-07-17 16:07
  **/
-@Component
 @SuppressWarnings("unchecked")
 @Slf4j
-@Order
 public class SysCache {
     /**
      * 字典缓存key
@@ -66,22 +61,22 @@ public class SysCache {
             .expireAfterWrite(1, TimeUnit.HOURS)
             .maximumSize(1000)
             .initialCapacity(128).build();
-    @Autowired
-    private SysDictService sysDictService;
-    @Autowired
-    private SysUserService sysUserService;
-    @Autowired
-    private SysDeptService sysDeptService;
-    @Autowired
-    private SysRoleService sysRoleService;
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
-    @Autowired
-    private SysRoleDeptService sysRoleDeptService;
-    @Autowired
-    private SysMenuService sysMenuService;
-    @Autowired
-    private SysRoleMenuService sysRoleMenuService;
+
+    private SysDictService sysDictService = SpringContextUtils.getType(SysDictService.class);
+
+    private SysUserService sysUserService = SpringContextUtils.getType(SysUserService.class);
+
+    private SysDeptService sysDeptService = SpringContextUtils.getType(SysDeptService.class);
+
+    private SysRoleService sysRoleService = SpringContextUtils.getType(SysRoleService.class);
+
+    private SysUserRoleService sysUserRoleService = SpringContextUtils.getType(SysUserRoleService.class);
+
+    private SysRoleDeptService sysRoleDeptService = SpringContextUtils.getType(SysRoleDeptService.class);
+
+    private SysMenuService sysMenuService = SpringContextUtils.getType(SysMenuService.class);
+
+    private SysRoleMenuService sysRoleMenuService = SpringContextUtils.getType(SysRoleMenuService.class);
 
     /**
      * 获取所有字典
