@@ -1,18 +1,24 @@
 package com.db.homepage.common.utils;
 
-import cn.hutool.cache.Cache;
-import cn.hutool.cache.CacheUtil;
 import com.db.homepage.module.admin.entity.HomeIndex;
 import com.db.homepage.module.admin.entity.HomeLink;
 import com.db.homepage.module.admin.entity.HomeType;
 import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.admin.service.HomeLinkService;
 import com.db.homepage.module.admin.service.HomeTypeService;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +29,7 @@ import java.util.stream.Collectors;
  **/
 @Component
 @SuppressWarnings("unchecked")
+@Slf4j
 public class BizCache {
     /**
      * index缓存key
@@ -36,7 +43,10 @@ public class BizCache {
      * 网址缓存key
      */
     private static final String HOME_LINK = "homeLink";
-    private static Cache<String, Object> cache = CacheUtil.newFIFOCache(128);
+    private static Cache<String, Object> cache = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .maximumSize(1000)
+            .initialCapacity(128).build();
     @Autowired
     private HomeIndexService indexService;
     @Autowired
@@ -48,36 +58,38 @@ public class BizCache {
      * 获取所有首页标签
      */
     public List<HomeIndex> findAllIndex() {
-        List<HomeIndex> list = (List<HomeIndex>) cache.get(HOME_INDEX);
-        if (list == null) {
-            list = indexService.lambdaQuery().orderByAsc(HomeIndex::getSort).list();
-            cache.put(HOME_INDEX, list);
+        try {
+            return (List<HomeIndex>) cache.get(HOME_INDEX, () ->
+                    indexService.lambdaQuery().orderByAsc(HomeIndex::getSort).list());
+        } catch (ExecutionException e) {
+            log.error(e.getMessage(), e);
         }
-        return list;
+        return new ArrayList<>();
     }
 
     /**
      * 获取所有分类
      */
     public List<HomeType> findAllType() {
-        List<HomeType> list = (List<HomeType>) cache.get(HOME_TYPE);
-        if (list == null) {
-            list = typeService.lambdaQuery().orderByAsc(HomeType::getSort).list();
-            cache.put(HOME_TYPE, list);
+        try {
+            return (List<HomeType>) cache.get(HOME_TYPE, () -> typeService.lambdaQuery().orderByAsc(HomeType::getSort).list());
+        } catch (ExecutionException e) {
+            log.error(e.getMessage(), e);
         }
-        return list;
+        return new ArrayList<>();
     }
 
     /**
      * 获取所有网址
      */
     public List<HomeLink> findAllLink() {
-        List<HomeLink> list = (List<HomeLink>) cache.get(HOME_LINK);
-        if (list == null) {
-            list = linkService.lambdaQuery().orderByAsc(HomeLink::getSort).list();
-            cache.put(HOME_LINK, list);
+        try {
+            return (List<HomeLink>) cache.get(HOME_LINK, () ->
+                    linkService.lambdaQuery().orderByAsc(HomeLink::getSort).list());
+        } catch (ExecutionException e) {
+            log.error(e.getMessage(), e);
         }
-        return list;
+        return new ArrayList<>();
     }
 
     /**
@@ -87,11 +99,17 @@ public class BizCache {
      * @return 网址集合
      */
     public List<HomeLink> findLinkByTypeId(Long typeId) {
-        return findAllLink().stream().filter(l -> l.getTypeId().equals(typeId))
-                .sorted(Comparator.comparing(HomeLink::getSort)).collect(Collectors.toList());
+        try {
+            return (List<HomeLink>) cache.get(HOME_TYPE + typeId, () ->
+                    findAllLink().stream().filter(l -> Objects.equals(l.getTypeId(), typeId))
+                            .sorted(Comparator.comparing(HomeLink::getSort)).collect(Collectors.toList()));
+        } catch (ExecutionException e) {
+            log.error(e.getMessage(), e);
+        }
+        return Lists.newArrayList();
     }
 
     public void clear() {
-        cache.clear();
+        cache.cleanUp();
     }
 }

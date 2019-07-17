@@ -8,12 +8,9 @@ import com.db.homepage.module.admin.mapper.HomeIndexMapper;
 import com.db.homepage.module.admin.service.HomeIndexService;
 import com.db.homepage.module.admin.vo.HomeVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 public class HomeIndexServiceImpl extends ServiceImpl<HomeIndexMapper, HomeIndex> implements HomeIndexService {
     @Autowired
-    @Lazy
     private BizCache bizCache;
 
     @Override
@@ -40,9 +36,6 @@ public class HomeIndexServiceImpl extends ServiceImpl<HomeIndexMapper, HomeIndex
         typeList.forEach(t -> {
             t.setLinkList(bizCache.findLinkByTypeId(t.getId()));
         });
-
-        // 排序
-        typeList = typeList.stream().sorted(Comparator.comparing(HomeType::getSort)).collect(Collectors.toList());
 
         homeVo.setTypeList(typeList);
         return homeVo;

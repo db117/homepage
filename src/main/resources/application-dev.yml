@@ -3,11 +3,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://140.143.241.208:3306/homepage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+      url: jdbc:mysql://140.143.241.208:13306/homepage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
       username: root
-      password: 123456
+      password: bai159753
       driverClassName: com.mysql.cj.jdbc.Driver
 
 
 logging:
-  path: D:/logs
+  path: C:/logs
