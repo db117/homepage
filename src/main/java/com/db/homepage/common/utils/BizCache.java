@@ -11,6 +11,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @Component
 @SuppressWarnings("unchecked")
 @Slf4j
+@Lazy
 public class BizCache {
     /**
      * index缓存key
