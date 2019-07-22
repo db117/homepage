@@ -5,7 +5,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css" media="all">
 <#--<link rel="stylesheet" href="${Request.request.contextPath}/static/plugin/ztree/css/metroStyle/metroStyle.css"-->
 <#--type="text/css">-->
 <#--<script type="text/javascript" src="${Request.request.contextPath}/static/lib/jquery.min.js"></script>-->
@@ -75,7 +75,7 @@
         </div>
     </div>
 </form>
-<script src="${request.contextPath}/static/plugin/layui/layui.js" charset="utf-8"></script>
+<script src="https://www.layuicdn.com/layui-v2.5.4/layui.js" charset="utf-8"></script>
 <script src="${request.contextPath}/static/js/layuicommon.js" charset="utf-8"></script>
 <script>
     //菜单树

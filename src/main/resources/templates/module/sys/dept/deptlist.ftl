@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>tree-table</title>
-    <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css" media="all">
 <#--<link rel="stylesheet" href="assets/common.css"/>-->
     <style>
         input {
@@ -42,7 +42,7 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script src="${request.contextPath}/static/plugin/layui/layui.js" charset="utf-8"></script>
+<script src="https://www.layuicdn.com/layui-v2.5.4/layui.js" charset="utf-8"></script>
 <script src="${request.contextPath}/static/js/layuicommon.js" charset="utf-8"></script>
 <script>
     layui.config({

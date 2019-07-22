@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
 
-    <link rel="stylesheet" href="${request.contextPath}/static/plugin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="${request.contextPath}/static/css/front.css" media="all">
 </head>
 
@@ -61,10 +61,10 @@
     </div>
 
 </div>
-<#--<script src="${request.contextPath}/static/plugin/layui/layui.js"></script>-->
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<#--<script src="${request.contextPath}/static/lib/jquery.min.js"></script>-->
+<#--<script src="https://www.layuicdn.com/layui-v2.5.4/layui.js"></script>-->
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<#--<script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js"></script>-->
 <script src="${request.contextPath}/static/js/front.js"></script>
-<script type="text/javascript" src="http://www.baidu.com/js/opensug.js"></script>
+<script type="text/javascript" src="https://www.baidu.com/js/opensug.js"></script>
 </body>
 </html>

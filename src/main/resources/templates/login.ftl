@@ -50,7 +50,7 @@
             </form>
         </div>
     </div>
-    <script src="${request.contextPath}/static/lib/jquery.min.js"></script>
+    <script src="https://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js"></script>
     <script type="text/javascript">
         $(function () {
 
